@@ -40,7 +40,6 @@ const FileUpload = async (file) => {
         downloadURL: downloadURL,
     };
 };
-
 const giveCurrentDateTime = () => {
     const today = new Date();
     const date =

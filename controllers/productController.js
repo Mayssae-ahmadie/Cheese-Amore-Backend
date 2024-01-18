@@ -24,23 +24,19 @@ const add = async (req, res) => {
             });
         }
 
-        if (!req.file) {
+        const file = await FileUpload(req.file);
+        const img = file.downloadURL;
+
+        if (!img) {
             return res.status(400).json({
                 success: false,
                 message: "Image file is required",
             });
         }
 
-        const uploadedFiles = await Promise.all(
-            files.map(async (file) => {
-                const uploadedFile = await FileUpload(file);
-                return uploadedFile.downloadURL;
-            })
-        );
-
         const newProduct = new Product({
             name,
-            image: uploadedFiles,
+            image: img,
             description,
             price,
             category,
@@ -48,7 +44,7 @@ const add = async (req, res) => {
         });
 
         await newProduct.save();
-
+        console.log(newProduct);
         res.status(200).json({
             success: true,
             message: "Product data added successfully",
@@ -67,6 +63,13 @@ const add = async (req, res) => {
 const getAll = async (_, res) => {
     try {
         const products = await Product.find({});
+        if (!products) {
+            return res.status(404).json({
+                success: false,
+                message: `Product not found`,
+            })
+        };
+
         res.status(200).json({
             success: true,
             message: "Products retrieved successfully",
@@ -132,31 +135,21 @@ const deleteById = async (req, res) => {
 
 const update = async (req, res) => {
     const { ID } = req.params;
-    const updates = req.body;
-    const images = req.files;
+    const { name, description, price, catergory, serving } = req.body;
 
     try {
-        const existingProduct = await Product.findById(ID);
+        const file = await FileUpload(req.file);
+        const image = file.downloadURL;
+        const Updates = {
+            name, image, description, price, catergory, serving
+        };
+        const existingProduct = await Product.findByIdAndUpdate(ID, Updates);
 
         if (!existingProduct) {
             return res.status(404).json({
                 success: false,
                 message: "Product not found",
             });
-        }
-
-        for (const key in updates) {
-            existingProduct[key] = updates[key];
-        }
-
-        if (images && images.length > 0) {
-            const uploadedFiles = await Promise.all(
-                images.map(async (file) => {
-                    const uploadedFile = await FileUpload(file);
-                    return uploadedFile.downloadURL;
-                })
-            );
-            existingProduct.image = uploadedFiles;
         }
 
         const updatedProduct = await existingProduct.save();

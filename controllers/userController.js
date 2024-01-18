@@ -1,7 +1,7 @@
 const Users = require("../models/User");
 const bcrypt = require("bcrypt");
 const { generateToken } = require('../extra/generateToken');
-const { getAuth, confirmPasswordReset, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, isEmailVerified, sendPasswordResetEmail } = require('firebase/auth');
+const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } = require('firebase/auth');
 const auth = getAuth();
 
 
@@ -139,62 +139,6 @@ const register = async (req, res) => {
     }
 };
 
-const sendResetEmail = async (req, res) => {
-    const {
-        email
-    } = req.body;
-
-    try {
-        await sendPasswordResetEmail(auth, email);
-        res.status(200).json({
-            success: true,
-            message: 'Password reset email sent successfully. Please check your email.',
-        });
-    } catch (error) {
-        console.error('Error sending password reset email:', error.message);
-        res.status(400).json({
-            success: false,
-            message: 'Error sending password reset email.',
-            error: error.message,
-        });
-    }
-};
-
-const resetPassword = async (req, res) => {
-    let { oobCode, newPassword } = req.body;
-
-    if (!oobCode) {
-        const refererUrl = req.get('referer');
-
-        if (refererUrl) {
-            const url = new URL(refererUrl);
-            oobCode = url.searchParams.get('oobCode');
-        }
-    }
-
-    try {
-        if (!oobCode) {
-            return res.status(400).json({
-                success: false,
-                message: 'No oobCode provided. Unable to reset password.',
-            });
-        }
-
-        await confirmPasswordReset(auth, oobCode, newPassword);
-        res.status(200).json({
-            success: true,
-            message: 'Password reset successful.',
-        });
-    } catch (error) {
-        console.error('Error resetting password:', error.message);
-        res.status(400).json({
-            success: false,
-            message: 'Error resetting password.',
-            error: error.message,
-        });
-    }
-};
-
 const getByID = async (req, res) => {
     const ID = req.params.ID;
     try {
@@ -325,4 +269,4 @@ const switchToAdmin = async (req, res) => {
     }
 };
 
-module.exports = { register, getByID, getAll, deleteById, update, login, sendResetEmail, resetPassword, switchToAdmin };
+module.exports = { register, getByID, getAll, deleteById, update, login, switchToAdmin };

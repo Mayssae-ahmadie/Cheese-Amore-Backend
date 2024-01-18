@@ -19,6 +19,6 @@ router.delete('/delete/:ID', isAuthenticated(['admin']), deleteById);
 router.get('/getById/:ID', getByID);
 router.get('/getAll', getAll);
 router.put('/update/:ID', upload.single('image'), isAuthenticated(['admin']), update);
-router.get('/categoryByName/:categoryName', getAllByCategory);
+router.get('/category/:category', getAllByCategory);
 
 module.exports = router;
