@@ -159,13 +159,6 @@ const removeProductFromCart = async (req, res) => {
             });
         }
 
-        // if (!cart.productIds.includes(productID)) {
-        //     return res.status(401).json({
-        //         success: false,
-        //         message: `Product with id ${productID} not found in your cart`,
-        //     });
-        // }
-
         const index = cart.productIds.indexOf(productID);
         if (index !== -1) {
             cart.productIds.splice(index, 1);
