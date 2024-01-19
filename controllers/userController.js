@@ -120,7 +120,6 @@ const register = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'User added successfully. Please check your email for verification.',
-            // token: generateToken(newUser._id, newUser.role),
             data: newUser,
         });
     } catch (error) {

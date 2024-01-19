@@ -13,6 +13,6 @@ const isAuthenticated = require("../middlewares/auth");
 router.post('/create', isAuthenticated(['client']), createCart);
 router.get('/getByUserID/:userID', getCartByUserID);
 router.post('/addProduct/:cartID', isAuthenticated(['client']), addProductToCart);
-router.post('/removeProduct/:cartID', isAuthenticated(['client']), removeProductFromCart);
+router.delete('/removeProduct/:cartID', isAuthenticated(['client']), removeProductFromCart);
 
 module.exports = router;
