@@ -107,6 +107,7 @@ const register = async (req, res) => {
             },
             role: role || "client",
         });
+        console.log(newUser);
 
         await newUser.save();
 

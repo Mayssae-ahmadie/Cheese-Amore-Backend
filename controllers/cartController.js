@@ -56,14 +56,8 @@ const getCartByUserID = async (req, res) => {
             message: "Data retrieved successfully",
             data: {
                 user: user,
-                cart: {
-                    productIds: cart.productIds.map(item => ({
-                        productId: item.productId._id,
-                        quantity: item.quantity,
-                        instruction: item.instruction,
-                    })),
-                },
-            }
+                cart: cart,
+            },
         });
     } catch (error) {
         res.status(500).json({
