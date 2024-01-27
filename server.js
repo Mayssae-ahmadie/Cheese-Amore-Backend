@@ -12,7 +12,7 @@ const cartRoute = require('./routes/cartRoutes');
 const testimonialRoute = require('./routes/testimonialRoutes');
 // const requestRoute = require('./routes/requestRoutes');
 const productRoute = require('./routes/productRoutes');
-// const orderRoute = require('./routes/orderRoutes');
+const orderRoute = require('./routes/orderRoutes');
 const emailRoute = require('./routes/emailRoutes');
 
 const app = express();
@@ -26,7 +26,7 @@ app.use('/cart', cartRoute);
 app.use('/testimonial', testimonialRoute);
 // app.use('/request', requestRoute);
 app.use('/product', productRoute);
-// app.use('/order', orderRoute);
+app.use('/order', orderRoute);
 app.use('/email', emailRoute);
 
 app.listen(PORT, () => {

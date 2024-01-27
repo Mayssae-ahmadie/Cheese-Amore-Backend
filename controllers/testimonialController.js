@@ -42,6 +42,31 @@ const getTestimonialByID = async (req, res) => {
     }
 };
 
+const getTestimonialByFullName = async (req, res) => {
+    try {
+        const { selectedReview, selectedFullName } = req.body;
+
+        const testimonial = new Testimonial({
+            review: selectedReview,
+            userId: { fullName: selectedFullName },
+        });
+
+        await testimonial.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Testimonial added successfully',
+            data: testimonial,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Unable to add testimonial',
+            error: error.message,
+        });
+    }
+};
+
 const addTestimonial = async (req, res) => {
     const { userId, review } = req.body;
     try {
@@ -106,6 +131,7 @@ const updateTestimonialByID = async (req, res) => {
 module.exports = {
     getAllTestimonials,
     getTestimonialByID,
+    getTestimonialByFullName,
     addTestimonial,
     updateTestimonialByID,
     deleteTestimonialByID,

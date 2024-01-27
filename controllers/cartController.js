@@ -133,7 +133,7 @@ const addProductToCart = async (req, res) => {
 
 const removeProductFromCart = async (req, res) => {
     try {
-        const { productID } = req.body;
+        const { _id } = req.params._id;
 
         const cart = await Cart.findOne({ _id: req.params.cartID });
 
@@ -144,17 +144,18 @@ const removeProductFromCart = async (req, res) => {
             });
         }
 
-        const productExists = await Product.findById(productID);
+        const productExists = await Product.findById({ _id: req.params._id });
 
         if (!productExists) {
             return res.status(404).json({
                 success: false,
-                message: `No product with id ${productID} available`,
+                message: `No product with id ${_id} available`,
             });
         }
-
-        const index = cart.productIds.indexOf(productID);
-        if (index !== -1) {
+        const productId = _id;
+        const index = cart.productIds.indexOf(productId);
+        console.log(index);
+        if (index == -1) {
             cart.productIds.splice(index, 1);
             await cart.save();
         }
