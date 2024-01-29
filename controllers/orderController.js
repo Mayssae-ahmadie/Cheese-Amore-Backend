@@ -9,7 +9,7 @@ const createOrderFromCart = async (req, res) => {
         const { shippingMethod } = req.body;
         const { receiveDateTime } = req.body;
         const { totalPrice } = req.body;
-
+        console.log(req.body);
         const cart = await Cart.findById(cartID).populate('productIds');
 
         if (!cart) {
@@ -30,6 +30,7 @@ const createOrderFromCart = async (req, res) => {
         const selectedShippingMethod = shippingMethod || defaultShippingMethod;
         const selecteddatetime = receiveDateTime;
         const selectedTotalPrice = totalPrice;
+        console.log(cartID);
 
         const order = new Order({
             userId: cart.userId,
@@ -57,7 +58,7 @@ const createOrderFromCart = async (req, res) => {
             data: order,
         });
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             success: false,
             message: 'Unable to create order from cart',
             error: error.message,

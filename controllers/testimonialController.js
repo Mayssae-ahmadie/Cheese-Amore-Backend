@@ -18,8 +18,58 @@ const getAllTestimonials = async (req, res) => {
     }
 };
 
+// const getTestimonialByID = async (req, res) => {
+//     try {
+//         const testimonial = await Testimonial.findById(req.params.ID);
+
+//         if (!testimonial) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: 'Testimonial not found',
+//             });
+//         }
+//         res.status(200).json({
+//             success: true,
+//             message: 'Data retrieved successfully',
+//             data: testimonial,
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             success: false,
+//             message: 'Unable to get data by ID',
+//             error: error.message,
+//         });
+//     }
+// };
+
+// const getTestimonialByFullName = async (req, res) => {
+//     try {
+//         const { selectedReview, selectedFullName } = req.body;
+
+//         const testimonial = new Testimonial({
+//             review: selectedReview,
+//             userId: { fullName: selectedFullName },
+//         });
+
+//         await testimonial.save();
+
+//         res.status(200).json({
+//             success: true,
+//             message: 'Testimonial added successfully',
+//             data: testimonial,
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             success: false,
+//             message: 'Unable to add testimonial',
+//             error: error.message,
+//         });
+//     }
+// };
+
 const getTestimonialByID = async (req, res) => {
     try {
+        // Retrieve the testimonial by its ID
         const testimonial = await Testimonial.findById(req.params.ID);
 
         if (!testimonial) {
@@ -28,40 +78,36 @@ const getTestimonialByID = async (req, res) => {
                 message: 'Testimonial not found',
             });
         }
+
+        // Extract the user ID associated with the testimonial
+        const userId = testimonial.userId;
+
+        // Fetch the corresponding user from the database
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found for this testimonial',
+            });
+        }
+
+        // Extract the full name from the user object
+        const fullName = user.fullName;
+
+        // Return the testimonial data along with the user's full name
         res.status(200).json({
             success: true,
-            message: 'Data retrieved successfully',
-            data: testimonial,
+            message: 'Testimonial retrieved successfully',
+            data: {
+                testimonial: testimonial,
+                userFullName: fullName,
+            },
         });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: 'Unable to get data by ID',
-            error: error.message,
-        });
-    }
-};
-
-const getTestimonialByFullName = async (req, res) => {
-    try {
-        const { selectedReview, selectedFullName } = req.body;
-
-        const testimonial = new Testimonial({
-            review: selectedReview,
-            userId: { fullName: selectedFullName },
-        });
-
-        await testimonial.save();
-
-        res.status(200).json({
-            success: true,
-            message: 'Testimonial added successfully',
-            data: testimonial,
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Unable to add testimonial',
             error: error.message,
         });
     }
@@ -131,7 +177,7 @@ const updateTestimonialByID = async (req, res) => {
 module.exports = {
     getAllTestimonials,
     getTestimonialByID,
-    getTestimonialByFullName,
+    // getTestimonialByFullName,
     addTestimonial,
     updateTestimonialByID,
     deleteTestimonialByID,

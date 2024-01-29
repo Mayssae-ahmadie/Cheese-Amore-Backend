@@ -11,7 +11,7 @@ const {
 } = require('../controllers/orderController');
 const isAuthenticated = require("../middlewares/auth");
 
-router.post('/create/:cartID', isAuthenticated(['client']), createOrderFromCart);
+router.post('/create/:cartID', createOrderFromCart);
 router.delete('/delete/:orderID', isAuthenticated(['admin']), deleteById);
 router.get('/getById/:orderID', getById);
 router.get('/getAll', getAll);

@@ -4,7 +4,7 @@ const router = express.Router();
 const {
     getAllTestimonials,
     getTestimonialByID,
-    getTestimonialByFullName,
+    // getTestimonialByFullName,
     addTestimonial,
     updateTestimonialByID,
     deleteTestimonialByID,
@@ -12,7 +12,7 @@ const {
 
 router.get('/getAll', getAllTestimonials);
 router.get('/getByID/:ID', getTestimonialByID);
-router.get('/getByFullName', getTestimonialByFullName);
+// router.get('/getByFullName', getTestimonialByFullName);
 router.post('/add', addTestimonial);
 router.put('/update/:ID', updateTestimonialByID);
 router.delete('/delete/:ID', deleteTestimonialByID);
