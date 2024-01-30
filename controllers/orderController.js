@@ -1,6 +1,7 @@
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const Email = require('../controllers/emailController');
 const { sendOrderNotificationEmailToOwner, sendOrderConfirmationEmailToClient } = require('../extra/sendEmails')
 
 const createOrderFromCart = async (req, res) => {
@@ -48,6 +49,8 @@ const createOrderFromCart = async (req, res) => {
         cart.productIds = [];
         cart.totalPrice = 0;
         await cart.save();
+
+        // if (res.status) { sendEmail };
 
         await sendOrderConfirmationEmailToClient(order);
         await sendOrderNotificationEmailToOwner(order);

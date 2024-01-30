@@ -10,6 +10,6 @@ router.put("/update/:ID", update);
 router.get("/getById/:ID", getByID);
 router.get("/getAll", getAll);
 router.delete("/delete/:ID", isAuthenticated(['admin']), deleteById);
-router.put("/switchToAdmin/:ID", isAuthenticated(["admin"]), switchToAdmin);
+router.put("/switchToAdmin/:ID", switchToAdmin);
 
 module.exports = router;

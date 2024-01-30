@@ -234,7 +234,7 @@ const update = async (req, res) => {
 };
 
 const switchToAdmin = async (req, res) => {
-    const ID = req.params.ID;
+    const ID = req.params.ID.trim();
 
     try {
         const result = await Users.findById(ID);

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
+const Product = require('../models/Product');
 
 const sendOrderConfirmationEmailToClient = async (Order) => {
     try {
@@ -18,7 +19,7 @@ const sendOrderConfirmationEmailToClient = async (Order) => {
 
         const productDetails = Order.productIds.map(product => `
             <div>
-                <p>Product ID: ${product._id}</p>
+               
                 <p>Name: ${product.name}</p>
                 <img src="${product.image}" alt="${product.name}" style="max-width: 100px;"/>
                 <p>Price: ${product.price}</p>
@@ -31,19 +32,18 @@ const sendOrderConfirmationEmailToClient = async (Order) => {
             subject: 'Order Confirmation',
             html: `
                 <p>Thank you for your order!</p>
-                <p>Order ID: ${Order._id}</p>
+            
                 <p>User Details:</p>
                 <p>Name: ${User.fullName}</p>
                 <p>Email: ${User.email}</p>
-                <p>Address: ${User.address}</p>
-                <p>Phone Number: ${User.phoneNumber}</p>
+              
+               
                 <p>Product Details:</p>
                 ${productDetails}
-                <p>Product ID: ${Order.productIds}</p>
                 <p>Total Price: ${Order.totalPrice}</p>
                 <p>Shipping Method: ${Order.shippingMethod}</p>
                 <p>Shipping Fee: ${Order.shippingFee}</p>
-                <p>Date and Time: ${Order.dateTime}</p>
+                <p>Date and time : ${Order.receiveDateTime}</p>
             `,
         };
 
@@ -83,9 +83,9 @@ const sendOrderNotificationEmailToOwner = async (Order) => {
                 <p>You have received a new order!</p>
                 <p>Order ID: ${Order._id}</p>
                 <p>User Details:</p>
-                <p>Name: ${user.fullName}</p>
-                <p>Email: ${user.email}</p>
-                <p>Address: ${user.address}</p>
+                <p>Name: ${User.fullName}</p>
+                <p>Email: ${User.email}</p>
+                <p>Address: ${User.fullAddress}</p>
                 <p>Phone Number: ${user.phoneNumber}</p>
                 <p>Product Details:</p>
                 ${productDetails}
@@ -93,7 +93,7 @@ const sendOrderNotificationEmailToOwner = async (Order) => {
                 <p>Total Price: ${Order.totalPrice}</p>
                 <p>Shipping Method: ${Order.shippingMethod}</p>
                 <p>Shipping Fee: ${Order.shippingFee}</p>
-                <p>Date and Time: ${Order.dateTime}</p>
+                <p>Date and Time: ${Order.receiveDateTime}</p>
             `,
         };
 
