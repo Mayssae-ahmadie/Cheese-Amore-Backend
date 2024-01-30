@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     shippingMethod: { type: String, enum: ['pick up', 'delivery'], default: 'delivery', required: true },
     shippingFee: { type: Number, required: true },
     paymentMethod: { type: String, default: 'cash on delivery', required: true },
-    receiveDateTime: { type: Date, required: true }
+    receiveDateTime: { type: String, required: true }
 },
     { timestamps: true }
 );
