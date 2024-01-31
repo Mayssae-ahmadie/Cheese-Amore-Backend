@@ -18,7 +18,7 @@ router.post('/add', upload.single('image'), add);
 router.delete('/delete/:ID', deleteById);
 router.get('/getById/:ID', getByID);
 router.get('/getAll', getAll);
-router.put('/update/:ID', upload.single('image'), update);
+router.put('/update/:ID', isAuthenticated(['admin']), upload.single('image'), update);
 router.get('/category/:category', getAllByCategory);
 
 module.exports = router;

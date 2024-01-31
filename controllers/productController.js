@@ -135,13 +135,18 @@ const deleteById = async (req, res) => {
 
 const update = async (req, res) => {
     const { ID } = req.params;
-    const { name, description, price, catergory, serving } = req.body;
+    const { name, description, price, catergory, serving, image } = req.body;
 
     try {
-        const file = await FileUpload(req.file);
-        const image = file.downloadURL;
+        let file;
+        let imageLink;
+        if (req.file) {
+            file = await FileUpload(req.file);
+            imageLink = file.downloadURL;
+        }
+        imageLink = image
         const Updates = {
-            name, image, description, price, catergory, serving
+            name, image: imageLink, description, price, catergory, serving
         };
         const existingProduct = await Product.findByIdAndUpdate(ID, Updates);
 
